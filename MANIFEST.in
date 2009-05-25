@@ -1,0 +1,3 @@
+include TODO README INSTALL AUTHORS COPYING LICENSE NEWS VERSION ChangeLog
+include ccm/Constants.py.in
+include Makefile MANIFEST.in
