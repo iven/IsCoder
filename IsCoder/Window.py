@@ -38,13 +38,15 @@ class MainWin(gtk.Window):
     def __init__(self):
         gtk.Window.__init__(self)
 
+        self.current_category = "General"
+
         # Enable RGBA colormap support
         colormap = self.get_screen().get_rgba_colormap()
         if colormap:
             gtk.widget_set_default_colormap(colormap)
 
         # Basic settings
-        self.set_default_size(990, 580)
+        self.set_default_size(740, 580)
         self.set_title(_("IsCoder - I'm a Simple Encoder"))
         self.connect("destroy", self.quit_cb)
 
@@ -60,14 +62,23 @@ class MainWin(gtk.Window):
         main_vbox.pack_start(menubar, False)
         menubar.show()
 
+        # Main Panes
         main_hpaned = gtk.HPaned()
         main_vbox.pack_start(main_hpaned)
         main_hpaned.show()
 
+        # Left Pane
         left_pane = gtk.VBox()
-        main_hpaned.pack1(left_pane)
+        left_pane.set_border_width(5)
+        main_hpaned.pack1(left_pane, False, False)
         left_pane.show()
 
+        cate_box = CategoriesBox()
+        cate_box.connect("category-changed", self.on_category_changed)
+        left_pane.pack_start(cate_box)
+        cate_box.show()
+
+        # Right Pane
         right_pane = gtk.VBox()
         main_hpaned.pack2(right_pane)
         right_pane.show()
@@ -104,6 +115,12 @@ class MainWin(gtk.Window):
         uimanager.add_ui_from_string(ui)
 
         return uimanager
+
+    def on_category_changed(self, widget, category):
+        if category != self.current_category:
+            print "Current category is: " + self.current_category
+            print "Changing to category: " + category
+            self.current_category = category
 
     def show_about_cb(self, *args):
         about_dialog = AboutDialog(self)

@@ -37,3 +37,21 @@ PixmapDir = DataDir+"/iscoder/images"
 #
 Version = "@version@"
 
+# Translation
+#
+import locale
+import gettext
+locale.setlocale(locale.LC_ALL, "")
+gettext.bindtextdomain("iscoder", DataDir + "/locale")
+gettext.textdomain("iscoder")
+_ = gettext.gettext
+
+# Categories
+#
+Categories = [
+        ["General", _("General")],
+        ["Video", _("Video")],
+        ["Audio", _("Audio")],
+        ["Subtitle", _("Subtitle")],
+        ["Filters", _("Filters")],
+        ]

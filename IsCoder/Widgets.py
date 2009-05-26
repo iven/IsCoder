@@ -21,6 +21,8 @@
 
 import pygtk
 import gtk
+import gobject
+import os
 
 from IsCoder.Constants import *
 
@@ -44,3 +46,41 @@ class AboutDialog(gtk.AboutDialog):
         self.set_copyright("Copyright \xC2\xA9 2009 Iven Day (Xu Lijian)")
         self.set_authors(["Iven Day (Xu Lijian) <ivenvd@gmail.com>",])
         self.set_website("http://www.kissuki.com/")
+
+class CategoriesBox(gtk.VBox):
+    "Category buttons group in the left pane"
+
+    __gsignals__ = {"category-changed": (gobject.SIGNAL_RUN_FIRST,
+                                         gobject.TYPE_NONE,
+                                         [str]),
+                                         }
+
+    def __init__(self):
+        gtk.VBox.__init__(self)
+
+        self.set_border_width(5)
+
+        self.buttons = {}
+        for category, label in Categories:
+            button = self.create_button(category, label)
+            self.pack_start(button, False)
+            self.buttons[category] = button
+
+    def create_button(self, category, label):
+        button = gtk.Button()
+        button.set_size_request(180, 50)
+        imagepath = PixmapDir + category + ".png"
+        if os.path.exists(imagepath):
+            image = gtk.Image()
+            image.set_from_file(imagepath)
+            button.set_image(image)
+
+        button.set_label(label)
+
+        button.connect('clicked', self.on_button_clicked_cb, category)
+        button.show()
+
+        return button
+
+    def on_button_clicked_cb(self, widget, category):
+        self.emit("category-changed", category)
