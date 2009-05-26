@@ -20,17 +20,27 @@
 # Copyright (C) 2009 Iven Day
 
 import pygtk
-pygtk.require('2.0')
 import gtk
 
-if gtk.pygtk_version < (2,12,0):
-    raise SystemExit(' * Error: PyGtk 2.12.0 or later required')
+from IsCoder.Constants import *
 
-try:
-    import IsCoder
-except ImportError:
-    raise SystemExit(' * Error: the "IsCoder" module is missing. Check if it is installed properly.')
+import locale
+import gettext
+locale.setlocale(locale.LC_ALL, "")
+gettext.bindtextdomain("iscoder", DataDir + "/locale")
+gettext.textdomain("iscoder")
+_ = gettext.gettext
 
-IsCoder.MainWin()
+class AboutDialog(gtk.AboutDialog):
+    "About Dialog"
 
-gtk.main()
+    def __init__(self, parent):
+        gtk.AboutDialog.__init__(self)
+        self.set_transient_for(parent)
+
+        self.set_name("IsCoder")
+        self.set_version(Version)
+        self.set_comments(_("This is a simple GUI frontend of mencoder."))
+        self.set_copyright("Copyright \xC2\xA9 2009 Iven Day (Xu Lijian)")
+        self.set_authors(["Iven Day (Xu Lijian) <ivenvd@gmail.com>",])
+        self.set_website("http://www.kissuki.com/")

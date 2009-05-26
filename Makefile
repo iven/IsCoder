@@ -9,4 +9,4 @@ uninstall:
 
 clean:
 	rm -rf build/
-	rm MANIFEST
+	rm IsCoder/*.pyc
