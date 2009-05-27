@@ -59,7 +59,7 @@ class LargeButton(PrettyButton):
         self.add(hbox)
 
         align = gtk.Alignment(0, .5, 1, 1)
-        align.set_padding(5, 0, 5, 10)
+        align.set_padding(2, 0, 5, 10)
         align.add(image)
         hbox.pack_start(align, False, False)
 
@@ -85,7 +85,7 @@ class LargeLabel(Label):
 
 class Image(gtk.Image):
 
-    def __init__(self, name = None, type = ImageNone, size = 32):
+    def __init__(self, name = None, type = ImageNone, size = 24):
         gtk.Image.__init__(self)
 
         if not name:
