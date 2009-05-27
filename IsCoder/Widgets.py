@@ -25,6 +25,7 @@ import gobject
 import os
 
 from IsCoder.Constants import *
+from IsCoder.Utils import *
 
 import locale
 import gettext
@@ -52,35 +53,52 @@ class CategoriesBox(gtk.VBox):
 
     __gsignals__ = {"category-changed": (gobject.SIGNAL_RUN_FIRST,
                                          gobject.TYPE_NONE,
-                                         [str]),
-                                         }
+                                         [str])}
+    def __init__(self):
+        gtk.VBox.__init__(self)
+
+        self.current_button = None
+        self.buttons = {}
+        self.set_border_width(5)
+
+        for category, label in Categories:
+            imagepath = os.path.join(PixmapDir, category + ".png")
+            button = LargeButton(label, imagepath)
+            button.connect('clicked', self.on_button_clicked_cb)
+            self.pack_start(button, False)
+            self.buttons[button] = category
+            if category == "General":
+                button.clicked()
+
+    def on_button_clicked_cb(self, widget):
+        if widget is not self.current_button:
+            widget.highlight()
+            if self.current_button:
+                self.current_button.unhighlight()
+            self.current_button = widget
+            self.emit("category-changed", self.buttons[widget])
+
+class ProfileBox(gtk.VBox):
+    "Profile Box in the left pane"
 
     def __init__(self):
         gtk.VBox.__init__(self)
 
         self.set_border_width(5)
 
-        self.buttons = {}
-        for category, label in Categories:
-            button = self.create_button(category, label)
-            self.pack_start(button, False)
-            self.buttons[category] = button
+        tree_view = gtk.TreeView()
+        self.pack_start(tree_view)
 
-    def create_button(self, category, label):
-        button = gtk.Button()
-        button.set_size_request(180, 50)
-        imagepath = PixmapDir + category + ".png"
-        if os.path.exists(imagepath):
-            image = gtk.Image()
-            image.set_from_file(imagepath)
-            button.set_image(image)
+        button = LargeButton(_("Load Profile..."))
+        self.pack_start(button, False)
 
-        button.set_label(label)
+        button = LargeButton(_("Save Profile..."))
+        self.pack_start(button, False)
 
-        button.connect('clicked', self.on_button_clicked_cb, category)
-        button.show()
+class PluginsBook(gtk.Notebook):
+    "Plugins notebook in the right pane"
 
-        return button
+    def __init__(self):
+        gtk.Notebook.__init__(self)
 
-    def on_button_clicked_cb(self, widget, category):
-        self.emit("category-changed", category)
+        self.set_show_tabs(True)

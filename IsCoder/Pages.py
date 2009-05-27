@@ -22,32 +22,8 @@
 import pygtk
 import gtk
 
-# Optional Imports
-#
-try:
-    import sexy
-    has_sexy = True
-except ImportError:
-    has_sexy = False
+from IsCoder.Constants import *
 
-# Paths
-#
-DataDir = "@prefix@/share"
-IconDir = DataDir+"/iscoder/icons"
-PixmapDir = DataDir+"/iscoder/images"
-
-# IconTheme
-#
-IconTheme = gtk.icon_theme_get_default()
-if not IconDir in IconTheme.get_search_path():
-    IconTheme.prepend_search_path(IconDir)
-
-# Version
-#
-Version = "@version@"
-
-# Translation
-#
 import locale
 import gettext
 locale.setlocale(locale.LC_ALL, "")
@@ -55,12 +31,3 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-# Categories
-#
-Categories = [
-        ["General", _("General")],
-        ["Video", _("Video")],
-        ["Audio", _("Audio")],
-        ["Subtitle", _("Subtitle")],
-        ["Filters", _("Filters")],
-        ]

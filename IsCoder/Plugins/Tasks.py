@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # This file is part of IsCoder.
 
@@ -19,17 +19,5 @@
 # Author(s): Iven Day (Xu Lijian) <ivenvd@gmail.com>
 # Copyright (C) 2009 Iven Day
 
-import pygtk
-pygtk.require('2.0')
-import gtk
-
-if gtk.pygtk_version < (2,12,0):
-    raise SystemExit(' * Error: PyGtk 2.12.0 or later required')
-
-try:
-    from IsCoder.Window import MainWin
-except ImportError:
-    raise SystemExit(' * Error: the "IsCoder" module is missing. Check if it is installed properly.')
-
-MainWin().show_all()
-gtk.main()
+class GeneralPlugin():
+    pass

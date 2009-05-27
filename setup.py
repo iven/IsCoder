@@ -112,6 +112,24 @@ with open(os.path.join("IsCoder/Constants.py"), "w") as f:
 
 data_files = []
 
+global_icon_path = "share/icons/hicolor/"
+local_icon_path = "share/iscoder/icons/hicolor/"
+
+for dir, subdirs, files in os.walk("images/"):
+    global_images = []
+    images = []
+    for file in files:
+        if file.endswith(".png") or file.endswith(".svg"):
+            file_path = "/".join((dir, file))
+            if file[:-4] == "iscoder":
+                global_images.append(file_path)
+            else:
+                images.append(file_path)
+    if len(global_images) > 0:
+        data_files.append((global_icon_path + dir[7:], global_images))
+    if len(images) > 0:
+        data_files.append((local_icon_path + dir[7:], images))
+
 setup (
         name             = "iscoder",
         version          = version,
@@ -121,7 +139,7 @@ setup (
         url              = "http://www.kissuki.com/",
         license          = "GPL",
         data_files       = data_files,
-        packages         = ["IsCoder"],
+        packages         = ["IsCoder", "IsCoder.Plugins"],
         scripts          = ["iscoder"],
         cmdclass         = {"uninstall" : uninstall,
                             "install" : install,
@@ -129,3 +147,13 @@ setup (
      )
 
 os.remove ("IsCoder/Constants.py")
+
+if sys.argv[1] == "install":
+    gtk_update_icon_cache = "gtk-update-icon-cache -f -t %s/share/iscoder/icons/hicolor" % prefix
+    root_specified = len([s for s in sys.argv if s.startswith("--root")]) > 0
+    if not root_specified:
+        print "Updating Gtk+ icon cache."
+        os.system(gtk_update_icon_cache)
+    else:
+        print """*** Icon cache not updated. After install, run this:
+***     %s""" % gtk_update_icon_cache
