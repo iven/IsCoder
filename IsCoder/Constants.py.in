@@ -55,6 +55,16 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
+# Image Types
+#
+(
+        ImageNone,
+        ImagePlugin,
+        ImageCategory,
+        ImageThemed,
+        ImageStock,
+        ) = range(5)
+
 # Categories
 #
 Categories = [

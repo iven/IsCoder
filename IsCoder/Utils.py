@@ -21,6 +21,8 @@
 
 import pygtk
 import gtk
+import gobject
+import pango
 import os
 
 from IsCoder.Constants import *
@@ -32,28 +34,14 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-class LargeButton(gtk.Button):
-    "Large buttons in the left pane"
+class PrettyButton(gtk.Button):
 
-    def __init__(self, label_text = "", image_path = None):
+    def __init__(self):
         gtk.Button.__init__(self)
-        self.set_size_request(180, 45)
+        #self.set_size_request(180, 45)
 
-        hbox = gtk.HBox()
-        self.add(hbox)
 
-        align = gtk.Alignment(0, .5, 1, 1)
-        align.set_padding(0, 0, 0, 10)
-        hbox.pack_start(align, False, False)
-
-        if image_path and os.path.exists(image_path):
-            image = gtk.Image()
-            image.set_from_file(image_path)
-            align.add(image)
-
-        label = gtk.Label()
-        label.set_markup("<span size='medium'>%s</span>" % label_text)
-        hbox.pack_start(label, True, True)
+        #label.set_markup("<span size='medium'>%s</span>" % label_text)
 
     def highlight(self):
         pass
@@ -61,12 +49,56 @@ class LargeButton(gtk.Button):
     def unhighlight(self):
         pass
 
+class LargeButton(PrettyButton):
+    "Large buttons in the left pane"
 
-class LargeLabel(gtk.Label):
+    def __init__(self, image, text):
+        PrettyButton.__init__(self)
+
+        hbox = gtk.HBox()
+        self.add(hbox)
+
+        align = gtk.Alignment(0, .5, 1, 1)
+        align.set_padding(5, 0, 5, 10)
+        align.add(image)
+        hbox.pack_start(align, False, False)
+
+        label = Label("<span size='large'>%s</span>" % text)
+        hbox.pack_start(label, True, True)
+
+class Label(gtk.Label):
+
+    def __init__(self, markup = "", wrap = 120):
+        gtk.Label.__init__(self)
+        self.set_markup(markup)
+        self.props.xalign = 0
+        self.props.wrap_mode = pango.WRAP_WORD
+        self.set_line_wrap(True)
+        self.set_size_request(wrap, -1)
+
+class LargeLabel(Label):
     "Large label in the left pane"
 
     def __init__(self, value = ""):
-        gtk.Label.__init__(self)
-        self.set_markup("<span size=\"x-large\">%s</span>" % value)
-        self.props.xalign = 0
+        Label.__init__(self)
+        self.set_markup("<span size=\"x-large\"><b>%s</b></span>" % value)
 
+class Image(gtk.Image):
+
+    def __init__(self, name = None, type = ImageNone, size = 32):
+        gtk.Image.__init__(self)
+
+        if not name:
+            return
+        try:
+            if type == ImageStock:
+                self.set_from_stock(name, size)
+                return
+            elif type == ImageCategory:
+                name = "category-" + name.lower()
+                pixbuf = IconTheme.load_icon(name, size, 0)
+            else:
+                raise gobject.GError
+            self.set_from_pixbuf(pixbuf)
+        except gobject.GError:
+            self.set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_BUTTON)

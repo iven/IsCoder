@@ -45,7 +45,7 @@ class MainWin(gtk.Window):
             gtk.widget_set_default_colormap(colormap)
 
         # Basic settings
-        self.set_default_size(740, 580)
+        self.set_default_size(840, 640)
         self.set_title(_("IsCoder - I'm a Simple Encoder"))
         self.connect("destroy", self.quit_cb)
         gtk.window_set_default_icon_name("iscoder")
@@ -69,24 +69,23 @@ class MainWin(gtk.Window):
         left_pane.set_border_width(5)
         main_hpaned.pack1(left_pane, False, False)
 
-        label = LargeLabel("Settings")
+        label = LargeLabel("Categories")
         left_pane.pack_start(label, False)
 
         cate_box = CategoriesBox()
         cate_box.connect("category-changed", self.on_category_changed)
-        left_pane.pack_start(cate_box, False)
+        left_pane.pack_start(cate_box, False, False)
 
         label = LargeLabel("Profile")
         left_pane.pack_start(label, False)
 
         profile_box = ProfileBox()
-        left_pane.pack_start(profile_box)
+        left_pane.pack_start(profile_box, True, True)
 
         # Right Pane
         right_pane = gtk.VBox()
         main_hpaned.pack2(right_pane)
 
-        # TODO
         notebook = PluginsBook()
         right_pane.pack_start(notebook)
 

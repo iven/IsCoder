@@ -61,13 +61,14 @@ class CategoriesBox(gtk.VBox):
         self.buttons = {}
         self.set_border_width(5)
 
-        for category, label in Categories:
-            imagepath = os.path.join(PixmapDir, category + ".png")
-            button = LargeButton(label, imagepath)
+        for name, label in Categories:
+            image = Image(name, type = ImageCategory)
+            button = LargeButton(image, label)
             button.connect('clicked', self.on_button_clicked_cb)
             self.pack_start(button, False)
-            self.buttons[button] = category
-            if category == "General":
+
+            self.buttons[button] = name
+            if name == "General":
                 button.clicked()
 
     def on_button_clicked_cb(self, widget):
@@ -87,12 +88,16 @@ class ProfileBox(gtk.VBox):
         self.set_border_width(5)
 
         tree_view = gtk.TreeView()
-        self.pack_start(tree_view)
+        self.pack_start(tree_view, True, True, 2)
 
-        button = LargeButton(_("Load Profile..."))
+        image = Image(name = gtk.STOCK_OPEN, type = ImageStock,
+                size = gtk.ICON_SIZE_LARGE_TOOLBAR)
+        button = LargeButton(image, _("Load Profile..."))
         self.pack_start(button, False)
 
-        button = LargeButton(_("Save Profile..."))
+        image = Image(name = gtk.STOCK_SAVE, type = ImageStock,
+                size = gtk.ICON_SIZE_LARGE_TOOLBAR)
+        button = LargeButton(image, _("Save Profile..."))
         self.pack_start(button, False)
 
 class PluginsBook(gtk.Notebook):
@@ -101,4 +106,5 @@ class PluginsBook(gtk.Notebook):
     def __init__(self):
         gtk.Notebook.__init__(self)
 
+        # TODO
         self.set_show_tabs(True)
