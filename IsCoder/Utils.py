@@ -34,26 +34,14 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-class PrettyButton(gtk.Button):
-
-    def __init__(self):
-        gtk.Button.__init__(self)
-        #self.set_size_request(180, 45)
-
-
-        #label.set_markup("<span size='medium'>%s</span>" % label_text)
-
-    def highlight(self):
-        pass
-
-    def unhighlight(self):
-        pass
-
-class LargeButton(PrettyButton):
+class LargeButton(gtk.Button):
     "Large buttons in the left pane"
 
     def __init__(self, image, text):
-        PrettyButton.__init__(self)
+        gtk.Button.__init__(self)
+
+        self.set_size_request(180, -1)
+        self.set_relief(gtk.RELIEF_NONE)
 
         hbox = gtk.HBox()
         self.add(hbox)
@@ -63,8 +51,19 @@ class LargeButton(PrettyButton):
         align.add(image)
         hbox.pack_start(align, False, False)
 
-        label = Label("<span size='large'>%s</span>" % text)
+        label = Label("<span size='medium'>%s</span>" % text)
         hbox.pack_start(label, True, True)
+
+class CategoryButton(LargeButton, gtk.ToggleButton):
+
+    def __init__(self, image, text):
+        LargeButton.__init__(self, image, text)
+        gtk.ToggleButton.__init__(self)
+        self.connect("expose-event", self.on_expose_event_cb)
+
+    def on_expose_event_cb(self, *args):
+        if self.flags() & gtk.HAS_FOCUS:
+            self.unset_flags(gtk.HAS_FOCUS)
 
 class Label(gtk.Label):
 
@@ -76,12 +75,21 @@ class Label(gtk.Label):
         self.set_line_wrap(True)
         self.set_size_request(wrap, -1)
 
-class LargeLabel(Label):
-    "Large label in the left pane"
+class HeaderLabel(Label):
 
     def __init__(self, value = ""):
         Label.__init__(self)
-        self.set_markup("<span size=\"x-large\"><b>%s</b></span>" % value)
+        self.style_block = 0
+        self.set_markup("<span size='large' weight='800'>%s</span>" % value)
+        self.connect("style-set", self.on_style_set_cb)
+
+    def on_style_set_cb(self, *args):
+        if self.style_block > 0:
+            return
+        self.style_block += 1
+        for state in (gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE):
+            self.modify_fg(state, self.style.bg[gtk.STATE_SELECTED])
+        self.style_block -= 1
 
 class Image(gtk.Image):
 

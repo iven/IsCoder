@@ -9,4 +9,3 @@ uninstall:
 
 clean:
 	rm -rf build/
-	rm IsCoder/*.pyc

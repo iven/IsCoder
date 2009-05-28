@@ -69,14 +69,14 @@ class MainWin(gtk.Window):
         left_pane.set_border_width(5)
         main_hpaned.pack1(left_pane, False, False)
 
-        label = LargeLabel("Categories")
+        label = HeaderLabel("Categories")
         left_pane.pack_start(label, False)
 
         cate_box = CategoriesBox()
         cate_box.connect("category-changed", self.on_category_changed)
         left_pane.pack_start(cate_box, False, False)
 
-        label = LargeLabel("Profile")
+        label = HeaderLabel("Profile")
         left_pane.pack_start(label, False)
 
         profile_box = ProfileBox()

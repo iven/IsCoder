@@ -59,11 +59,12 @@ class CategoriesBox(gtk.VBox):
 
         self.current_button = None
         self.buttons = {}
+        self.toggle_block = 0
         self.set_border_width(5)
 
         for name, label in Categories:
             image = Image(name, type = ImageCategory)
-            button = LargeButton(image, label)
+            button = CategoryButton(image, label)
             button.connect('clicked', self.on_button_clicked_cb)
             self.pack_start(button, False)
 
@@ -72,12 +73,16 @@ class CategoriesBox(gtk.VBox):
                 button.clicked()
 
     def on_button_clicked_cb(self, widget):
+        if self.toggle_block > 0:
+            return False
+        self.toggle_block += 1
         if widget is not self.current_button:
-            widget.highlight()
             if self.current_button:
-                self.current_button.unhighlight()
+                self.current_button.set_active(False)
             self.current_button = widget
             self.emit("category-changed", self.buttons[widget])
+        widget.set_active(True)
+        self.toggle_block -= 1
 
 class ProfileBox(gtk.VBox):
     "Profile Box in the left pane"
