@@ -23,6 +23,7 @@ import pygtk
 import gtk
 
 from IsCoder.Constants import *
+from IsCoder import Plugins
 
 import locale
 import gettext
@@ -31,3 +32,20 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
+class CategoryPage(gtk.Notebook):
+    "Plugin page in the right pane"
+
+    def __init__(self, category):
+        gtk.Notebook.__init__(self)
+
+        self.set_scrollable(True)
+
+        self.plugins = []
+
+        for name in dir(Plugins):
+            if not name.startswith('_'):
+                plugin = getattr(getattr(Plugins, name),
+                        'plugin', Plugins.Empty)
+                if plugin.category is category:
+                    self.append_page(plugin, gtk.Label(plugin.plugin_name))
+                    self.plugins.append(plugin)

@@ -59,9 +59,9 @@ class CategoryButton(LargeButton, gtk.ToggleButton):
     def __init__(self, image, text):
         LargeButton.__init__(self, image, text)
         gtk.ToggleButton.__init__(self)
-        self.connect("expose-event", self.on_expose_event_cb)
+        self.connect("expose-event", self.expose_event_cb)
 
-    def on_expose_event_cb(self, *args):
+    def expose_event_cb(self, *args):
         if self.flags() & gtk.HAS_FOCUS:
             self.unset_flags(gtk.HAS_FOCUS)
 
@@ -81,9 +81,9 @@ class HeaderLabel(Label):
         Label.__init__(self)
         self.style_block = 0
         self.set_markup("<span size='large' weight='800'>%s</span>" % value)
-        self.connect("style-set", self.on_style_set_cb)
+        self.connect("style-set", self.style_set_cb)
 
-    def on_style_set_cb(self, *args):
+    def style_set_cb(self, *args):
         if self.style_block > 0:
             return
         self.style_block += 1
@@ -96,7 +96,7 @@ class Image(gtk.Image):
     def __init__(self, name = None, type = ImageNone, size = 24):
         gtk.Image.__init__(self)
 
-        if not name:
+        if name is None:
             return
         try:
             if type == ImageStock:

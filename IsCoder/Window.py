@@ -25,6 +25,7 @@ import vte
 
 from IsCoder.Constants import *
 from IsCoder.Widgets import *
+from IsCoder.Pages import *
 
 import locale
 import gettext
@@ -64,6 +65,17 @@ class MainWin(gtk.Window):
         main_hpaned = gtk.HPaned()
         main_vbox.pack_start(main_hpaned)
 
+        # Right Pane
+        self.right_pane = gtk.Frame()
+        self.right_pane.set_shadow_type(gtk.SHADOW_NONE)
+        self.right_pane.set_border_width(5)
+        main_hpaned.pack2(self.right_pane)
+
+        self.categories= {}
+        for name, label in Categories:
+            self.categories[name] = {"label": HeaderLabel(label),
+                                     "page" : CategoryPage(name),}
+
         # Left Pane
         left_pane = gtk.VBox()
         left_pane.set_border_width(5)
@@ -72,26 +84,14 @@ class MainWin(gtk.Window):
         label = HeaderLabel("Categories")
         left_pane.pack_start(label, False)
 
-        cate_box = CategoriesBox()
-        cate_box.connect("category-changed", self.on_category_changed)
-        left_pane.pack_start(cate_box, False, False)
+        self.cate_box = CategoriesBox(self)
+        left_pane.pack_start(self.cate_box, False, False)
 
         label = HeaderLabel("Profile")
         left_pane.pack_start(label, False)
 
         profile_box = ProfileBox()
         left_pane.pack_start(profile_box, True, True)
-
-        # Right Pane
-        right_pane = gtk.VBox()
-        main_hpaned.pack2(right_pane)
-
-        notebook = PluginsBook()
-        right_pane.pack_start(notebook)
-
-        #terminal = vte.Terminal()
-        #right_pane.pack_start(terminal)
-        #terminal.fork_command()
 
     def get_uimanager(self):
         ui = """<ui>
@@ -123,8 +123,13 @@ class MainWin(gtk.Window):
 
         return uimanager
 
-    def on_category_changed(self, widget, category):
-        print category
+    def set_page(self, category):
+        child = self.right_pane.get_child()
+        if child is not None:
+            self.right_pane.remove(child)
+        self.right_pane.set_label_widget(self.categories[category]["label"])
+        self.right_pane.add(self.categories[category]["page"])
+        self.right_pane.show_all()
 
     def show_about_cb(self, *args):
         about_dialog = AboutDialog(self)

@@ -32,4 +32,4 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-plugin = Plugin(_("MP3"), "Audio")
+plugin = Plugin()

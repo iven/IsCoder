@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 
 # This file is part of IsCoder.
 
@@ -23,7 +23,6 @@ import pygtk
 import gtk
 
 from IsCoder.Constants import *
-from IsCoder.Plugin import Plugin
 
 import locale
 import gettext
@@ -32,4 +31,14 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-plugin = Plugin(_("MP3"), "Audio")
+class Plugin(gtk.VBox):
+    """Plugin class, all plugins should be inherited from this."""
+
+    def __init__(self, name = "", category = ""):
+        gtk.VBox.__init__(self)
+
+        self.plugin_name = name
+        self.category = category
+
+        if category not in [Category[1] for Category in Categories]:
+            return

@@ -51,36 +51,34 @@ class AboutDialog(gtk.AboutDialog):
 class CategoriesBox(gtk.VBox):
     "Category buttons group in the left pane"
 
-    __gsignals__ = {"category-changed": (gobject.SIGNAL_RUN_FIRST,
-                                         gobject.TYPE_NONE,
-                                         [str])}
-    def __init__(self):
+    def __init__(self, main):
         gtk.VBox.__init__(self)
 
-        self.current_button = None
-        self.buttons = {}
+        self.main = main
+        self.current_category = None
+        self.cate_buttons = {}
         self.toggle_block = 0
         self.set_border_width(5)
 
         for name, label in Categories:
             image = Image(name, type = ImageCategory)
             button = CategoryButton(image, label)
-            button.connect('clicked', self.on_button_clicked_cb)
+            button.connect('clicked', self.button_clicked_cb, name)
             self.pack_start(button, False)
 
-            self.buttons[button] = name
-            if name == "General":
+            self.cate_buttons[name] = button
+            if name is "General":
                 button.clicked()
 
-    def on_button_clicked_cb(self, widget):
+    def button_clicked_cb(self, widget, category):
         if self.toggle_block > 0:
             return False
         self.toggle_block += 1
-        if widget is not self.current_button:
-            if self.current_button:
-                self.current_button.set_active(False)
-            self.current_button = widget
-            self.emit("category-changed", self.buttons[widget])
+        if category is not self.current_category:
+            if self.current_category is not None:
+                self.cate_buttons[self.current_category].set_active(False)
+            self.current_category = category
+            self.main.set_page(category)
         widget.set_active(True)
         self.toggle_block -= 1
 
@@ -104,12 +102,3 @@ class ProfileBox(gtk.VBox):
                 size = gtk.ICON_SIZE_LARGE_TOOLBAR)
         button = LargeButton(image, _("Save Profile..."))
         self.pack_start(button, False)
-
-class PluginsBook(gtk.Notebook):
-    "Plugins notebook in the right pane"
-
-    def __init__(self):
-        gtk.Notebook.__init__(self)
-
-        # TODO
-        self.set_show_tabs(True)

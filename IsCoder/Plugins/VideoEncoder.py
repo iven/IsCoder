@@ -19,5 +19,17 @@
 # Author(s): Iven Day (Xu Lijian) <ivenvd@gmail.com>
 # Copyright (C) 2009 Iven Day
 
-class GeneralPlugin():
-    pass
+import pygtk
+import gtk
+
+from IsCoder.Constants import *
+from IsCoder.Plugin import Plugin
+
+import locale
+import gettext
+locale.setlocale(locale.LC_ALL, "")
+gettext.bindtextdomain("iscoder", DataDir + "/locale")
+gettext.textdomain("iscoder")
+_ = gettext.gettext
+
+plugin = Plugin(_("VideoEncoder"), "Video")
