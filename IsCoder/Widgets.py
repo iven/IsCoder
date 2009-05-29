@@ -91,6 +91,7 @@ class ProfileBox(gtk.VBox):
         self.set_border_width(5)
 
         tree_view = gtk.TreeView()
+        tree_view.set_rules_hint(True)
         self.pack_start(tree_view, True, True, 2)
 
         image = Image(name = gtk.STOCK_OPEN, type = ImageStock,

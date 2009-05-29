@@ -61,6 +61,10 @@ class MainWin(gtk.Window):
         menubar = uimanager.get_widget('/MenuBar')
         main_vbox.pack_start(menubar, False)
 
+        toolbar = uimanager.get_widget('/ToolBar')
+        toolbar.set_style(gtk.TOOLBAR_BOTH)
+        main_vbox.pack_start(toolbar, False)
+
         # Main Panes
         main_hpaned = gtk.HPaned()
         main_vbox.pack_start(main_hpaned)
@@ -73,8 +77,7 @@ class MainWin(gtk.Window):
 
         self.categories= {}
         for name, label in Categories:
-            self.categories[name] = {"label": HeaderLabel(label),
-                                     "page" : CategoryPage(name),}
+            self.categories[name] = CategoryPage(name)
 
         # Left Pane
         left_pane = gtk.VBox()
@@ -103,6 +106,16 @@ class MainWin(gtk.Window):
                             <menuitem action="About"/>
                         </menu>
                     </menubar>
+                    <toolbar name="ToolBar">
+                        <toolitem action="Add" />
+                        <toolitem action="Remove" />
+                        <separator name="sep1"/>
+                        <toolitem action="Command" />
+                        <separator name="sep2"/>
+                        <toolitem action="Start" />
+                        <toolitem action="Pause" />
+                        <toolitem action="Stop" />
+                    </toolbar>
                 </ui>"""
 
         uimanager = gtk.UIManager()
@@ -116,6 +129,12 @@ class MainWin(gtk.Window):
             ('Quit', gtk.STOCK_QUIT, '_Quit', '<Control>Q', 'Quit the Program', self.quit_cb),
             ('Help', None, '_Help'),
             ('About', gtk.STOCK_ABOUT, '_About', None, 'About IsCoder', self.show_about_cb),
+            ('Add', gtk.STOCK_ADD, 'Add', '<Control>A', 'Add files to the file list', None),
+            ('Remove', gtk.STOCK_REMOVE, 'Remove', '<Control>R', 'Remove files from the file list', None),
+            ('Command', gtk.STOCK_EXECUTE, 'Command', '<Control>C', 'Show Command Line', None),
+            ('Start', gtk.STOCK_MEDIA_PLAY, 'Start', '<Control>Return', 'Start Encoding', None),
+            ('Pause', gtk.STOCK_MEDIA_PAUSE, 'Pause', '<Control>P', 'Pause Encoding', None),
+            ('Stop', gtk.STOCK_MEDIA_STOP, 'Stop', '<Control>S', 'Stop Encoding', None),
             ])
         uimanager.insert_action_group(action_group, 0)
 
@@ -127,8 +146,7 @@ class MainWin(gtk.Window):
         child = self.right_pane.get_child()
         if child is not None:
             self.right_pane.remove(child)
-        self.right_pane.set_label_widget(self.categories[category]["label"])
-        self.right_pane.add(self.categories[category]["page"])
+        self.right_pane.add(self.categories[category])
         self.right_pane.show_all()
 
     def show_about_cb(self, *args):

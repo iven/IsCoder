@@ -31,14 +31,25 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
-class Plugin(gtk.VBox):
+class Plugin(gtk.ScrolledWindow):
     """Plugin class, all plugins should be inherited from this."""
 
-    def __init__(self, name = "", category = ""):
-        gtk.VBox.__init__(self)
+    def __init__(self, name = "", category = "", widgets = ()):
+        gtk.ScrolledWindow.__init__(self)
 
         self.plugin_name = name
         self.category = category
+        self.widgets = widgets
 
-        if category not in [Category[1] for Category in Categories]:
-            return
+        self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+
+        viewport = gtk.Viewport()
+        viewport.set_shadow_type(gtk.SHADOW_NONE)
+        self.add(viewport)
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(5)
+        viewport.add(vbox)
+
+        for widget in widgets:
+            vbox.pack_start(widget, False, False)
