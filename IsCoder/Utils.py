@@ -34,6 +34,10 @@ gettext.bindtextdomain("iscoder", DataDir + "/locale")
 gettext.textdomain("iscoder")
 _ = gettext.gettext
 
+IconTheme = gtk.icon_theme_get_default()
+if not IconDir in IconTheme.get_search_path():
+    IconTheme.prepend_search_path(IconDir)
+
 class LargeButton(gtk.Button):
     "Large buttons in the left pane"
 

@@ -21,11 +21,11 @@
 
 import pygtk
 import gtk
-import vte
 
 from IsCoder.Constants import *
 from IsCoder.Widgets import *
 from IsCoder.Pages import *
+from IsCoder.Profile import *
 
 import locale
 import gettext
@@ -39,6 +39,8 @@ class MainWin(gtk.Window):
 
     def __init__(self):
         gtk.Window.__init__(self)
+
+        self.profile = Profile()
 
         # Enable RGBA colormap support
         colormap = self.get_screen().get_rgba_colormap()
@@ -56,12 +58,13 @@ class MainWin(gtk.Window):
         self.add(main_vbox)
 
         # MenuBar and ToolBar
-        uimanager = self.get_uimanager()
+        uimanager = self.__get_uimanager()
 
         menubar = uimanager.get_widget('/MenuBar')
         main_vbox.pack_start(menubar, False)
 
         toolbar = uimanager.get_widget('/ToolBar')
+        toolbar.set_icon_size(gtk.ICON_SIZE_LARGE_TOOLBAR)
         toolbar.set_style(gtk.TOOLBAR_BOTH)
         main_vbox.pack_start(toolbar, False)
 
@@ -93,14 +96,25 @@ class MainWin(gtk.Window):
         label = HeaderLabel("Profile")
         left_pane.pack_start(label, False)
 
-        profile_box = ProfileBox()
+        profile_box = ProfileBox(self)
         left_pane.pack_start(profile_box, True, True)
 
-    def get_uimanager(self):
+    def __get_uimanager(self):
         ui = """<ui>
                     <menubar name="MenuBar">
                         <menu action="File">
-                            <menuitem action="Quit"/>
+                            <menuitem action="Add" />
+                            <menuitem action="Remove" />
+                            <menuitem action="Clear" />
+                            <separator name="sep1" />
+                            <menuitem action="Command" />
+                            <separator name="sep2" />
+                            <menuitem action="Quit" />
+                        </menu>
+                        <menu action="Process">
+                            <menuitem action="Start" />
+                            <menuitem action="Pause" />
+                            <menuitem action="Stop" />
                         </menu>
                         <menu action="Help">
                             <menuitem action="About"/>
@@ -109,9 +123,10 @@ class MainWin(gtk.Window):
                     <toolbar name="ToolBar">
                         <toolitem action="Add" />
                         <toolitem action="Remove" />
-                        <separator name="sep1"/>
+                        <toolitem action="Clear" />
+                        <separator name="sep1" />
                         <toolitem action="Command" />
-                        <separator name="sep2"/>
+                        <separator name="sep2" />
                         <toolitem action="Start" />
                         <toolitem action="Pause" />
                         <toolitem action="Stop" />
@@ -126,12 +141,14 @@ class MainWin(gtk.Window):
         action_group = gtk.ActionGroup('MainWin')
         action_group.add_actions([
             ('File', None, '_File'),
-            ('Quit', gtk.STOCK_QUIT, '_Quit', '<Control>Q', 'Quit the Program', self.quit_cb),
+            ('Process', None, '_Process'),
             ('Help', None, '_Help'),
+            ('Quit', gtk.STOCK_QUIT, '_Quit', '<Control>Q', 'Quit the Program', self.quit_cb),
             ('About', gtk.STOCK_ABOUT, '_About', None, 'About IsCoder', self.show_about_cb),
             ('Add', gtk.STOCK_ADD, 'Add', '<Control>A', 'Add files to the file list', None),
             ('Remove', gtk.STOCK_REMOVE, 'Remove', '<Control>R', 'Remove files from the file list', None),
-            ('Command', gtk.STOCK_EXECUTE, 'Command', '<Control>C', 'Show Command Line', None),
+            ('Clear', gtk.STOCK_CLEAR, 'Clear', '<Control>C', 'Clear all files in the file list', None),
+            ('Command', gtk.STOCK_EXECUTE, 'Command', '<Control>T', 'Show Command Line', None),
             ('Start', gtk.STOCK_MEDIA_PLAY, 'Start', '<Control>Return', 'Start Encoding', None),
             ('Pause', gtk.STOCK_MEDIA_PAUSE, 'Pause', '<Control>P', 'Pause Encoding', None),
             ('Stop', gtk.STOCK_MEDIA_STOP, 'Stop', '<Control>S', 'Stop Encoding', None),
@@ -143,6 +160,7 @@ class MainWin(gtk.Window):
         return uimanager
 
     def set_page(self, category):
+        "Being called when the category buttons is clicked."
         child = self.right_pane.get_child()
         if child is not None:
             self.right_pane.remove(child)

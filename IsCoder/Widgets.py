@@ -47,6 +47,9 @@ class AboutDialog(gtk.AboutDialog):
         self.set_copyright("Copyright \xC2\xA9 2009 Iven Day (Xu Lijian)")
         self.set_authors(["Iven Day (Xu Lijian) <ivenvd@gmail.com>",])
         self.set_website("http://www.kissuki.com/")
+        if IconTheme.lookup_icon("iscoder", 64, 0):
+            icon = IconTheme.load_icon("iscoder", 64, 0)
+            self.set_logo(icon)
 
 class CategoriesBox(gtk.VBox):
     "Category buttons group in the left pane"
@@ -85,8 +88,10 @@ class CategoriesBox(gtk.VBox):
 class ProfileBox(gtk.VBox):
     "Profile Box in the left pane"
 
-    def __init__(self):
+    def __init__(self, main):
         gtk.VBox.__init__(self)
+
+        self.main = main
 
         self.set_border_width(5)
 

@@ -19,8 +19,8 @@
 # Author(s): Iven Day (Xu Lijian) <ivenvd@gmail.com>
 # Copyright (C) 2009 Iven Day
 
-import pygtk
-import gtk
+from os.path import join as path_join
+from xdg.BaseDirectory import xdg_config_home
 
 # Optional Imports
 #
@@ -33,14 +33,10 @@ except ImportError:
 # Paths
 #
 DataDir = "@prefix@/share"
-IconDir = DataDir+"/iscoder/icons"
-PixmapDir = DataDir+"/iscoder/images"
-
-# IconTheme
-#
-IconTheme = gtk.icon_theme_get_default()
-if not IconDir in IconTheme.get_search_path():
-    IconTheme.prepend_search_path(IconDir)
+IconDir = path_join(DataDir, "iscoder", "icons")
+PixmapDir = path_join(DataDir, "iscoder", "images")
+ConfigDir = path_join(xdg_config_home, "iscoder")
+ProfileDir = path_join(ConfigDir, "profiles")
 
 # Version
 #
