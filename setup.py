@@ -130,6 +130,22 @@ for dir, subdirs, files in os.walk("images/"):
     if len(images) > 0:
         data_files.append((local_icon_path + dir[7:], images))
 
+podir = os.path.join (os.path.realpath ("."), "po")
+if os.path.isdir (podir):
+    buildcmd = "msgfmt -o build/locale/%s/iscoder.mo po/%s.po"
+    mopath = "build/locale/%s/iscoder.mo"
+    destpath = "share/locale/%s/LC_MESSAGES"
+    for name in os.listdir (podir):
+        if name[-2:] == "po":
+            name = name[:-3]
+            if sys.argv[1] == "build" \
+               or (sys.argv[1] == "install" and \
+                   not os.path.exists (mopath % name)):
+                if not os.path.isdir ("build/locale/" + name):
+                    os.makedirs ("build/locale/" + name)
+                os.system (buildcmd % (name, name))
+            data_files.append ((destpath % name, [mopath % name]))
+
 setup (
         name             = "iscoder",
         version          = version,
@@ -149,7 +165,7 @@ setup (
 os.remove ("IsCoder/Constants.py")
 
 if sys.argv[1] == "install":
-    gtk_update_icon_cache = "gtk-update-icon-cache -f -t %s/share/iscoder/icons/hicolor" % prefix
+    gtk_update_icon_cache = "gtk-update-icon-cache -f -t %s/share/{,iscoder/}icons/hicolor" % prefix
     root_specified = len([s for s in sys.argv if s.startswith("--root")]) > 0
     if not root_specified:
         print "Updating Gtk+ icon cache."

@@ -22,15 +22,10 @@
 import os
 import ConfigParser
 from UserDict import UserDict
+from os.path import join as path_join
+from xdg.BaseDirectory import xdg_config_home
 
-from IsCoder.Constants import *
-
-import locale
-import gettext
-locale.setlocale(locale.LC_ALL, "")
-gettext.bindtextdomain("iscoder", DataDir + "/locale")
-gettext.textdomain("iscoder")
-_ = gettext.gettext
+ProfileDir = path_join(xdg_config_home, "iscoder/profiles")
 
 class Profile(ConfigParser.RawConfigParser):
     "Manage mencoder profiles"

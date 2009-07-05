@@ -40,8 +40,6 @@ class MainWin(gtk.Window):
     def __init__(self):
         gtk.Window.__init__(self)
 
-        self.profile = Profile()
-
         # Enable RGBA colormap support
         colormap = self.get_screen().get_rgba_colormap()
         if colormap:
@@ -49,7 +47,7 @@ class MainWin(gtk.Window):
 
         # Basic settings
         self.set_default_size(840, 640)
-        self.set_title(_("IsCoder - I'm a Simple Encoder"))
+        self.set_title("IsCoder - I'm a Simple Encoder")
         self.connect("destroy", self.quit_cb)
         gtk.window_set_default_icon_name("iscoder")
 
@@ -64,8 +62,8 @@ class MainWin(gtk.Window):
         main_vbox.pack_start(menubar, False)
 
         toolbar = uimanager.get_widget('/ToolBar')
-        toolbar.set_icon_size(gtk.ICON_SIZE_LARGE_TOOLBAR)
-        toolbar.set_style(gtk.TOOLBAR_BOTH)
+        #toolbar.set_icon_size(gtk.ICON_SIZE_SMALL_TOOLBAR)
+        #toolbar.set_style(gtk.TOOLBAR_BOTH)
         main_vbox.pack_start(toolbar, False)
 
         # Main Panes
@@ -87,13 +85,13 @@ class MainWin(gtk.Window):
         left_pane.set_border_width(5)
         main_hpaned.pack1(left_pane, False, False)
 
-        label = HeaderLabel("Categories")
+        label = HeaderLabel(_("Categories"))
         left_pane.pack_start(label, False)
 
         self.cate_box = CategoriesBox(self)
         left_pane.pack_start(self.cate_box, False, False)
 
-        label = HeaderLabel("Profile")
+        label = HeaderLabel(_("Profile"))
         left_pane.pack_start(label, False)
 
         profile_box = ProfileBox(self)
@@ -140,18 +138,18 @@ class MainWin(gtk.Window):
 
         action_group = gtk.ActionGroup('MainWin')
         action_group.add_actions([
-            ('File', None, '_File'),
-            ('Process', None, '_Process'),
-            ('Help', None, '_Help'),
-            ('Quit', gtk.STOCK_QUIT, '_Quit', '<Control>Q', 'Quit the Program', self.quit_cb),
-            ('About', gtk.STOCK_ABOUT, '_About', None, 'About IsCoder', self.show_about_cb),
-            ('Add', gtk.STOCK_ADD, 'Add', '<Control>A', 'Add files to the file list', None),
-            ('Remove', gtk.STOCK_REMOVE, 'Remove', '<Control>R', 'Remove files from the file list', None),
-            ('Clear', gtk.STOCK_CLEAR, 'Clear', '<Control>C', 'Clear all files in the file list', None),
-            ('Command', gtk.STOCK_EXECUTE, 'Command', '<Control>T', 'Show Command Line', None),
-            ('Start', gtk.STOCK_MEDIA_PLAY, 'Start', '<Control>Return', 'Start Encoding', None),
-            ('Pause', gtk.STOCK_MEDIA_PAUSE, 'Pause', '<Control>P', 'Pause Encoding', None),
-            ('Stop', gtk.STOCK_MEDIA_STOP, 'Stop', '<Control>S', 'Stop Encoding', None),
+            ('File', None, _('_File')),
+            ('Process', None, _('_Process')),
+            ('Help', None, _('_Help')),
+            ('Quit', gtk.STOCK_QUIT, _('_Quit'), '<Control>Q', _('Quit the Program'), self.quit_cb),
+            ('About', gtk.STOCK_ABOUT, _('_About'), None, _('About IsCoder'), self.show_about_cb),
+            ('Add', gtk.STOCK_ADD, _('Add'), '<Control>A', _('Add files to the file list'), None),
+            ('Remove', gtk.STOCK_REMOVE, _('Remove'), '<Control>R', _('Remove files from the file list'), None),
+            ('Clear', gtk.STOCK_CLEAR, _('Clear'), '<Control>C', _('Clear all files in the file list'), None),
+            ('Command', gtk.STOCK_EXECUTE, _('Command'), '<Control>T', _('Show Command Line'), None),
+            ('Start', gtk.STOCK_MEDIA_PLAY, _('Start'), '<Control>Return', _('Start Encoding'), None),
+            ('Pause', gtk.STOCK_MEDIA_PAUSE, _('Pause'), '<Control>P', _('Pause Encoding'), None),
+            ('Stop', gtk.STOCK_MEDIA_STOP, _('Stop'), '<Control>S', _('Stop Encoding'), None),
             ])
         uimanager.insert_action_group(action_group, 0)
 

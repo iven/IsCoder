@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2009-07-05 02:21+CST\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: ../IsCoder/Constants.py.in:71
+msgid "General"
+msgstr ""
+
+#: ../IsCoder/Constants.py.in:72
+msgid "Video"
+msgstr ""
+
+#: ../IsCoder/Constants.py.in:73
+msgid "Audio"
+msgstr ""
+
+#: ../IsCoder/Constants.py.in:74
+msgid "Subtitle"
+msgstr ""
+
+#: ../IsCoder/Constants.py.in:75
+msgid "Filters"
+msgstr ""
+
+#: ../IsCoder/Plugins/MP3.py:35
+msgid "MP3"
+msgstr ""
+
+#: ../IsCoder/Plugins/Tasks.py:35
+msgid "Tasks"
+msgstr ""
+
+#: ../IsCoder/Plugins/VideoEncoder.py:35
+msgid "VideoEncoder"
+msgstr ""
+
+#: ../IsCoder/Widgets.py:46
+msgid "This is a simple GUI frontend of mencoder."
+msgstr ""
+
+#: ../IsCoder/Widgets.py:104
+msgid "Load Profile..."
+msgstr ""
+
+#: ../IsCoder/Widgets.py:109
+msgid "Save Profile..."
+msgstr ""
+
+#: ../IsCoder/Window.py:88
+msgid "Categories"
+msgstr ""
+
+#: ../IsCoder/Window.py:94
+msgid "Profile"
+msgstr ""
+
+#: ../IsCoder/Window.py:141
+msgid "_File"
+msgstr ""
+
+#: ../IsCoder/Window.py:142
+msgid "_Process"
+msgstr ""
+
+#: ../IsCoder/Window.py:143
+msgid "_Help"
+msgstr ""
+
+#: ../IsCoder/Window.py:144
+msgid "Quit the Program"
+msgstr ""
+
+#: ../IsCoder/Window.py:144
+msgid "_Quit"
+msgstr ""
+
+#: ../IsCoder/Window.py:145
+msgid "About IsCoder"
+msgstr ""
+
+#: ../IsCoder/Window.py:145
+msgid "_About"
+msgstr ""
+
+#: ../IsCoder/Window.py:146
+msgid "Add"
+msgstr ""
+
+#: ../IsCoder/Window.py:146
+msgid "Add files to the file list"
+msgstr ""
+
+#: ../IsCoder/Window.py:147
+msgid "Remove"
+msgstr ""
+
+#: ../IsCoder/Window.py:147
+msgid "Remove files from the file list"
+msgstr ""
+
+#: ../IsCoder/Window.py:148
+msgid "Clear"
+msgstr ""
+
+#: ../IsCoder/Window.py:148
+msgid "Clear all files in the file list"
+msgstr ""
+
+#: ../IsCoder/Window.py:149
+msgid "Command"
+msgstr ""
+
+#: ../IsCoder/Window.py:149
+msgid "Show Command Line"
+msgstr ""
+
+#: ../IsCoder/Window.py:150
+msgid "Start"
+msgstr ""
+
+#: ../IsCoder/Window.py:150
+msgid "Start Encoding"
+msgstr ""
+
+#: ../IsCoder/Window.py:151
+msgid "Pause"
+msgstr ""
+
+#: ../IsCoder/Window.py:151
+msgid "Pause Encoding"
+msgstr ""
+
+#: ../IsCoder/Window.py:152
+msgid "Stop"
+msgstr ""
+
+#: ../IsCoder/Window.py:152
+msgid "Stop Encoding"
+msgstr ""
+

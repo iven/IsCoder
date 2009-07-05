@@ -21,14 +21,15 @@
 
 from os.path import join as path_join
 from xdg.BaseDirectory import xdg_config_home
+from Profile import Profile
 
 # Optional Imports
 #
-try:
-    import sexy
-    has_sexy = True
-except ImportError:
-    has_sexy = False
+#try:
+#    import sexy
+#    has_sexy = True
+#except ImportError:
+#    has_sexy = False
 
 # Paths
 #
@@ -36,11 +37,14 @@ DataDir = "@prefix@/share"
 IconDir = path_join(DataDir, "iscoder", "icons")
 PixmapDir = path_join(DataDir, "iscoder", "images")
 ConfigDir = path_join(xdg_config_home, "iscoder")
-ProfileDir = path_join(ConfigDir, "profiles")
 
 # Version
 #
 Version = "@version@"
+
+# Profile
+
+profile = Profile()
 
 # Translation
 #
