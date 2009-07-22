@@ -26,6 +26,7 @@ import os
 
 from IsCoder.Constants import *
 from IsCoder.Utils import *
+from IsCoder import Plugins
 
 import locale
 import gettext
@@ -58,30 +59,41 @@ class CategoriesBox(gtk.VBox):
         gtk.VBox.__init__(self)
 
         self.main = main
-        self.current_category = None
-        self.cate_buttons = {}
+        self.current_cname = None
         self.toggle_block = 0
         self.set_border_width(5)
 
-        for name, label in Categories:
-            image = Image(name, type = ImageCategory)
-            button = CategoryButton(image, label)
-            button.connect('clicked', self.button_clicked_cb, name)
+        categories = {}
+        buttons = {}
+        for cname, clabel in Categories:
+            image = Image(cname, type = ImageCategory)
+            button = CategoryButton(image, clabel)
+            button.connect('clicked', self.button_clicked_cb, cname)
             self.pack_start(button, False)
+            buttons[cname] = button
 
-            self.cate_buttons[name] = button
-            if name is "General":
-                button.clicked()
+            category = gtk.Notebook()
+            categories[cname] = category
 
-    def button_clicked_cb(self, widget, category):
+        for pname in dir(Plugins):
+            if not pname.startswith('_'):
+                plugin = getattr(getattr(Plugins, pname), 'plugin')
+                categories[plugin.cname].append_page(
+                        plugin, gtk.Label(plugin.pname))
+
+        self.categories = categories
+        self.buttons = buttons
+        buttons["General"].clicked()
+
+    def button_clicked_cb(self, widget, cname):
         if self.toggle_block > 0:
             return False
         self.toggle_block += 1
-        if category is not self.current_category:
-            if self.current_category is not None:
-                self.cate_buttons[self.current_category].set_active(False)
-            self.current_category = category
-            self.main.set_page(category)
+        if cname is not self.current_cname:
+            if self.current_cname is not None:
+                self.buttons[self.current_cname].set_active(False)
+            self.current_cname = cname
+            self.main.set_page(self.categories[cname])
         widget.set_active(True)
         self.toggle_block -= 1
 
@@ -108,3 +120,4 @@ class ProfileBox(gtk.VBox):
                 size = gtk.ICON_SIZE_LARGE_TOOLBAR)
         button = LargeButton(image, _("Save Profile..."))
         self.pack_start(button, False)
+

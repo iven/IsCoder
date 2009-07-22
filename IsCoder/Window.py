@@ -24,7 +24,6 @@ import gtk
 
 from IsCoder.Constants import *
 from IsCoder.Widgets import *
-from IsCoder.Pages import *
 from IsCoder.Profile import *
 
 import locale
@@ -75,10 +74,6 @@ class MainWin(gtk.Window):
         self.right_pane.set_shadow_type(gtk.SHADOW_NONE)
         self.right_pane.set_border_width(5)
         main_hpaned.pack2(self.right_pane)
-
-        self.categories= {}
-        for name, label in Categories:
-            self.categories[name] = CategoryPage(name)
 
         # Left Pane
         left_pane = gtk.VBox()
@@ -162,7 +157,7 @@ class MainWin(gtk.Window):
         child = self.right_pane.get_child()
         if child is not None:
             self.right_pane.remove(child)
-        self.right_pane.add(self.categories[category])
+        self.right_pane.add(category)
         self.right_pane.show_all()
 
     def show_about_cb(self, *args):

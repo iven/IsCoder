@@ -34,11 +34,11 @@ _ = gettext.gettext
 class Plugin(gtk.ScrolledWindow):
     """Plugin class, all plugins should be inherited from this."""
 
-    def __init__(self, name = "", category = "", widgets = ()):
+    def __init__(self, pname = "", cname = "", widgets = ()):
         gtk.ScrolledWindow.__init__(self)
 
-        self.plugin_name = name
-        self.category = category
+        self.pname = pname
+        self.cname = cname
         self.widgets = widgets
 
         self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
